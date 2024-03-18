@@ -14,3 +14,22 @@ git clone --branch main --depth 1 <REPO URL> povi
 cd povi
 nimble install
 ```
+
+# Command-line Arguments
+```
+usage: povi [--debug] [words ...]
+
+positional arguments:
+  words          Words to search. You can specify multiple words by splitting
+                 them by whitespace.
+
+options:
+  --debug        Enable debug logs.
+```
+
+# License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+* * *
+
+Feel free to enhance Povi according to your needs and contribute back to the project! If you encounter any issues or have suggestions for improvement, please open an issue on the repository. Thank you for using Povi!
