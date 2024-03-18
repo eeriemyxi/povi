@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Nim Environment
         uses: jiro4989/setup-nim-action@v1
         with:
@@ -22,7 +22,7 @@ jobs:
           nim c -d:ssl -d:release --opt:speed -o:bin/povi-x86-64.bin src/povi
 
       - name: Upload Binaries to Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             bin/povi-x86-64.bin
