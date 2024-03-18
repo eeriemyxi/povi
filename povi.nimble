@@ -1,6 +1,6 @@
 # Package
 
-version = "0.1.1"
+version = "0.1.2"
 author = "myxi"
 description = "Novi, but written in Nim."
 license = "MIT"
