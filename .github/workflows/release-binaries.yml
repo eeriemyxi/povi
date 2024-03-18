@@ -1,0 +1,26 @@
+on:
+  push:
+    tag:
+      - "v*"
+name: Upload Binary to Release
+
+jobs:
+  build:
+    name: Upload Binary to Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Build Binaries
+        uses: jiro4989/setup-nim-action@v1
+        with:
+          nim-version: '2.0.2' # default is 'stable'
+          # repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p bin
+          nim c -d:ssl -d:release --opt:speed -o:bin/povi-x86-64.bin src/povi
+
+      - name: Upload Binaries to Release
+        uses: softprops/action-gh-release@v1
+          with: |
+            bin/povi-x86-64.bin
