@@ -11,11 +11,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Build Binaries
+      - name: Setup Nim Environment
         uses: jiro4989/setup-nim-action@v1
         with:
           nim-version: '2.0.2' # default is 'stable'
           # repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Binaries
         run: |
           mkdir -p bin
           nim c -d:ssl -d:release --opt:speed -o:bin/povi-x86-64.bin src/povi
