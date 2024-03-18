@@ -6,6 +6,7 @@ name: Upload Binary to Release
 
 jobs:
   build:
+    permissions: write-all
     name: Upload Binary to Release
     runs-on: ubuntu-latest
     steps:
