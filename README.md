@@ -1,6 +1,7 @@
 # Povi
 A dictionary for your terminal. This project is identical to my other project, novi. 
 But it is faster because it is written in Nim.
+![](https://i.imgur.com/ob6mBef.png)
 
 # Installation
 ## First Method
