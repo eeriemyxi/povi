@@ -22,5 +22,5 @@ jobs:
 
       - name: Upload Binaries to Release
         uses: softprops/action-gh-release@v1
-          with: |
+        with: |
             bin/povi-x86-64.bin
