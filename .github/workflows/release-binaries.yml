@@ -3,24 +3,25 @@ on:
     tags:
       - "v*"
 name: Upload Binary to Release
-
 jobs:
   build:
     permissions: write-all
-    name: Upload Binary to Release
+    name: Upload Binaries to Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
       - name: Setup Nim Environment
         uses: jiro4989/setup-nim-action@v1
         with:
-          nim-version: '2.0.2' # default is 'stable'
-          # repo-token: ${{ secrets.GITHUB_TOKEN }}
+          nim-version: '2.0.2'
+
       - name: Set up MinGW
         uses: egor-tensin/setup-mingw@v2
         with:
           platform: x64
+
       - name: Build Binaries
         run: |
           mkdir -p bin
