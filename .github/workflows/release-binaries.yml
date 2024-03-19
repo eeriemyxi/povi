@@ -1,6 +1,6 @@
 on:
   push:
-    tag:
+    tags:
       - "v*"
 name: Upload Binary to Release
 
