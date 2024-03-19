@@ -18,4 +18,4 @@ proc get_word_file*(client: HttpClient, word: string): string =
             return ""
         resp = client.get(resp.headers["location"])
 
-    resp.bodyStream.readAll()
+    resp.body_stream.read_all()

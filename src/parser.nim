@@ -10,7 +10,7 @@ proc cherrypick_node(
         node: XmlNode, cls: string, s: var seq[XmlNode], use_re: bool = false
 ) =
     for el in node:
-        if el.kind != XmlNodeKind.xnElement:
+        if el.kind != XmlNodeKind.xn_element:
             continue
 
         let cls_t = el.attr("class")
@@ -30,7 +30,7 @@ proc cherrypick_node(
         node: XmlNode, cls: string, use_re: bool = false
 ): Option[XmlNode] =
     for el in node:
-        if el.kind != XmlNodeKind.xnElement:
+        if el.kind != XmlNodeKind.xn_element:
             continue
 
         let cls_t = el.attr("class")
@@ -45,7 +45,7 @@ proc cherrypick_node(
             return some(el)
 
         let n = cherrypick_node(el, cls, use_re)
-        if n.isSome:
+        if n.is_some:
             return n
 
     return none(XmlNode)
@@ -76,13 +76,13 @@ proc parse_word_def(node: XmlNode): string =
     var parsed_txt = new_string_stream()
 
     for n in node:
-        if n.kind == xnText:
+        if n.kind == xn_text:
             let t = n.inner_text()
             if t != "" and not t.contains(re"\n"):
                 parsed_txt.write(t)
             else:
                 debug fmt"Ignoring {t=} because it didn't meet the conditions"
-        elif n.kind == xnElement:
+        elif n.kind == xn_element:
             if n.tag == "a":
                 parsed_txt.write(parse_a_tag($constants.BASE_URL, n))
             elif n.tag == "strong":
@@ -99,6 +99,7 @@ proc parse_word_def(node: XmlNode): string =
 
     var txt = parsed_txt.read_all()
     txt.strip(leading = false, chars = {' ', ':'})
+
     return txt
 
 proc parse_example_texts(node: XmlNode): seq[string] =
@@ -127,7 +128,6 @@ proc parse_def_text(word_body: XmlNode): seq[struct.WordDefinition] =
 
     var defs: seq[XmlNode]
     cherrypick_node(word_body, "ddef_block", defs, true)
-    # debug &"{defs=}"
 
     for df in defs:
         let stripped_df = cherrypick_node(df, "ddef_d", true)
@@ -165,7 +165,6 @@ proc parse_word_class(node: XmlNode): Option[WordClass] =
         return some(WordClass(cls: cls, code: code))
 
 proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
-    debug("Called parse_definitions")
     let html = parse_html(html_txt)
 
     for h_div in html.find_all("div"):

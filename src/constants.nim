@@ -1,7 +1,4 @@
-# import struct
-import std/uri
-import std/os
-import std/re
+import std/[uri, os, re]
 import struct
 
 const
@@ -13,6 +10,5 @@ const
     LANGUAGE* = struct.SupportedLanguage.ENGLISH
 
 let
-    SCRIPT_DIR* = os.getAppDir()
+    SCRIPT_DIR* = os.get_app_dir()
     WORD_CLASS_RE* = re(r"\W*(?<word>\w*)\W*?(?:\[?\W*?(?<code>\w)\W*?\])?")
-    # WORD_CLASS_RE* = re(r"\W*(?<word>\w*)\W*?(?:\[?\W*?(?<code>\w)\W*?\])?")

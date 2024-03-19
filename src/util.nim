@@ -8,17 +8,17 @@ proc hyperlink*(url: string, label: string): string =
     return &"\e]8;;{url}\e\\{label}\e]8;;\e\\"
 
 proc inform_invalid_word*(word: string) =
-    stdout.styledWriteLine(
+    stdout.styled_write_line(
         fgRed, styleBright, &"{struct.Emoji.WARNING} Could not find word: {word}"
     )
 
 proc inform_searching_word*(word: string) =
-    stdout.styledWriteLine(
+    stdout.styled_write_line(
         fgGreen, styleBright, &"{struct.Emoji.DIM_BUTTON} Searching for: {word}"
     )
 
 proc inform_found_word*(word: string) =
-    stdout.styledWriteLine(
+    stdout.styled_write_line(
         fgGreen, styleBright, &"{struct.Emoji.HEARTS}  Found word: {word}"
     )
 

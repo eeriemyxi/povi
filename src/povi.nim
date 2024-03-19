@@ -1,27 +1,27 @@
 import std/[httpclient, parseopt, options, logging, strformat]
 import util, parser, http, struct
 
-var LOG_LEVEL = lvlInfo
+var LOG_LEVEL = lvl_info
 
 proc handle_cli(): seq[string] =
-    var p = initOptParser()
+    var p = init_opt_parser()
     var words: seq[string]
 
-    for (kind, key, val) in p.getopt():
+    for (kind, key, val) in p.get_opt():
         case kind
-        of cmdEnd:
+        of cmd_end:
             break
-        of cmdLongOption, cmdShortOption:
+        of cmd_long_option, cmd_short_option:
             if key == "debug":
-                LOG_LEVEL = lvlDebug
-        of cmdArgument:
+                LOG_LEVEL = lvl_debug
+        of cmd_argument:
             words.add(key)
 
     return words
 
 var words: seq[string] = handle_cli()
 
-let log = newConsoleLogger(LOG_LEVEL)
+let log = new_console_logger(LOG_LEVEL)
 addHandler(log)
 
 proc exit_gracefully(client: HttpClient, code: int) =
@@ -53,8 +53,8 @@ proc handle_word(client: HttpClient, word: string) =
 
     debug fmt"{defs=}"
 
-when isMainModule:
-    let client = httpclient.newHttpClient(maxRedirects = 0)
+when is_main_module:
+    let client = httpclient.new_http_client(max_redirects = 0)
 
     debug(&"{words=}")
 
