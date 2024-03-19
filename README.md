@@ -5,8 +5,7 @@ But it is faster because it is written in Nim.
 
 # Installation
 ## First Method
-You can download pre-compiled x86\_64 binaries from the [release page](https://github.com/eeriemyxi/povi/releases/latest) of the 
-GitHub mirror of this repository.
+You can download pre-compiled amd64 binaries for Windows and Linux from the [release page](https://github.com/eeriemyxi/povi/releases/latest) of the GitHub mirror of this repository.
 ## Second Method
 Install Nim and Nimble.
 ```shell
