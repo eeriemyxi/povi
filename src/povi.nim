@@ -12,6 +12,9 @@ proc handle_cli(): seq[string] =
         of cmd_end:
             break
         of cmd_long_option, cmd_short_option:
+            if key == "help" or key == "h":
+                echo constants.HELP_TEXT
+                quit(0)
             if key == "debug":
                 LOG_LEVEL = lvl_debug
             if key == "version" or key == "V":

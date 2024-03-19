@@ -10,6 +10,7 @@ const
     LANGUAGE* = struct.SupportedLanguage.ENGLISH
 
 include includes/version
+include includes/help_text
 
 let
     SCRIPT_DIR* = os.get_app_dir()
