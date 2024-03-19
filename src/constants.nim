@@ -9,6 +9,8 @@ const
         "(KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
     LANGUAGE* = struct.SupportedLanguage.ENGLISH
 
+include includes/version
+
 let
     SCRIPT_DIR* = os.get_app_dir()
     WORD_CLASS_RE* = re(r"\W*(?<word>\w*)\W*?(?:\[?\W*?(?<code>\w)\W*?\])?")

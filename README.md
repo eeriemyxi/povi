@@ -16,7 +16,7 @@ nimble install
 
 # Command-line Arguments
 ```
-usage: povi [--debug] [words ...]
+usage: povi [--debug] [-V] [words ...]
 
 positional arguments:
   words          Words to search. You can specify multiple words by splitting
@@ -24,6 +24,7 @@ positional arguments:
 
 options:
   --debug        Enable debug logs.
+  -V, --version  Show program version.
 ```
 
 # License

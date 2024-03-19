@@ -1,5 +1,5 @@
 import std/[httpclient, parseopt, options, logging, strformat]
-import util, parser, http, struct
+import util, parser, http, struct, constants
 
 var LOG_LEVEL = lvl_info
 
@@ -14,6 +14,9 @@ proc handle_cli(): seq[string] =
         of cmd_long_option, cmd_short_option:
             if key == "debug":
                 LOG_LEVEL = lvl_debug
+            if key == "version" or key == "V":
+                echo constants.VERSION
+                quit(0)
         of cmd_argument:
             words.add(key)
 
