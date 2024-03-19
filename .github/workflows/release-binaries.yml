@@ -17,13 +17,19 @@ jobs:
         with:
           nim-version: '2.0.2' # default is 'stable'
           # repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
       - name: Build Binaries
         run: |
           mkdir -p bin
-          nim c -d:ssl -d:release --opt:speed -o:bin/povi-x86-64.bin src/povi
+          nim c -d:ssl -d:release --opt:size --cpu:amd64 -o:bin/povi-amd64.bin src/povi
+          nim c -d:ssl -d:mingw -d:release --opt:size -o:bin/povi-amd64.exe --cpu:amd64 src/povi
 
       - name: Upload Binaries to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            bin/povi-x86-64.bin
+            bin/povi-amd64.bin
+            bin/povi-amd64.exe
