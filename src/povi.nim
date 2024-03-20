@@ -34,6 +34,7 @@ let log = new_console_logger(LOG_LEVEL)
 logging.add_handler(log)
 
 proc exit_gracefully(client: HttpClient, code: int) =
+    alternate_screen_end()
     client.close()
     quit(code)
 
@@ -66,7 +67,8 @@ proc handle_word(client: HttpClient, word: string): int =
     return 0
 
 proc repl() =
-    stderr.write_line("Type :exit to quit. Or <C-d>. Or <C-c>.")
+    alternate_screen_start()
+    stderr.write_line("Type :exit to quit. Or :e. Or <C-d>. Or <C-c>.")
     let client = make_http_client()
     var line: string
 
@@ -74,11 +76,12 @@ proc repl() =
         let ok = read_line_from_stdin("povi > ", line)
 
         if not ok:
+            exit_gracefully(client, 0)
             break
 
         line = strip(line)
 
-        if line == ":exit":
+        if line == ":exit" or line == ":e":
             exit_gracefully(client, 0)
 
         let words = line.split_whitespace()

@@ -17,7 +17,7 @@ Note: this method may error at the last step. But don't panic, it should still i
 
 # Command-line Arguments
 ```
-usage: povi [-h] [--debug] [-V] [--repl] [words ...]
+usage: povi [-h] [--debug] [-V] [-r] [words ...]
 
 positional arguments:
   words          Words to search. You can specify multiple words by splitting
@@ -27,7 +27,7 @@ options:
   -h, --help     Show this help message and exit.
   --debug        Enable debug logs.
   -V, --version  Show program version.
-  --repl         Initiate a REPL session.
+  -r, --repl     Initiate a REPL session.
 ```
 
 # License

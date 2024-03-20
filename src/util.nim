@@ -7,6 +7,12 @@ proc serialize_word*(word: string): string =
 proc hyperlink*(url: string, label: string): string =
     return &"\e]8;;{url}\e\\{label}\e]8;;\e\\"
 
+proc alternate_screen_start*() =
+    echo "\e[?1049h"
+
+proc alternate_screen_end*() =
+    stderr.write "\e[?1049l"
+
 proc inform_invalid_word*(word: string) =
     stdout.styled_write_line(
         fgRed, styleBright, &"{struct.Emoji.WARNING} Could not find word: {word}"
