@@ -1,8 +1,8 @@
-import std/[httpclient, parseopt, options, logging, rdstdin, strformat, unicode]
+import
+    std/[httpclient, parseopt, options, logging, rdstdin, strformat, unicode, envvars]
 import util, parser, http, struct, constants
 
 var LOG_LEVEL = lvl_info
-var REPL = false
 
 proc handle_cli(): seq[string] =
     var p = init_opt_parser()
@@ -22,7 +22,9 @@ proc handle_cli(): seq[string] =
                 echo constants.VERSION
                 quit(0)
             if key == "repl" or key == "r":
-                REPL = true
+                put_env("POVI_USE_REPL", "1")
+            if key == "altsc" or key == "a":
+                put_env("POVI_ALTSC", "1")
         of cmd_argument:
             words.add(key)
 
@@ -73,7 +75,7 @@ proc repl() =
     var line: string
 
     while true:
-        let ok = read_line_from_stdin("povi > ", line)
+        let ok = read_line_from_stdin(constants.REPL_PROMPT, line)
 
         if not ok:
             exit_gracefully(client, 0)
@@ -101,7 +103,7 @@ proc main(words: seq[string]) =
     exit_gracefully(client, code)
 
 when is_main_module:
-    if REPL:
+    if exists_env("POVI_USE_REPL") and get_env("POVI_USE_REPL") == "1":
         repl()
     else:
         main(words)

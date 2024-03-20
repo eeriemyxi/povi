@@ -1,4 +1,4 @@
-import std/[re, terminal, options, strformat, strutils]
+import std/[re, terminal, options, strformat, strutils, envvars]
 import struct, constants
 
 proc serialize_word*(word: string): string =
@@ -8,9 +8,13 @@ proc hyperlink*(url: string, label: string): string =
     return &"\e]8;;{url}\e\\{label}\e]8;;\e\\"
 
 proc alternate_screen_start*() =
+    if not exists_env("POVI_ALTSC") or get_env("POVI_ALTSC") == "0":
+        return
     echo "\e[?1049h"
 
 proc alternate_screen_end*() =
+    if not exists_env("POVI_ALTSC") or get_env("POVI_ALTSC") == "0":
+        return
     stderr.write "\e[?1049l"
 
 proc inform_invalid_word*(word: string) =
