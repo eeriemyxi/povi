@@ -28,18 +28,18 @@ proc handle_cli(): seq[string] =
 var words: seq[string] = handle_cli()
 
 let log = new_console_logger(LOG_LEVEL)
-addHandler(log)
+logging.add_handler(log)
 
 proc exit_gracefully(client: HttpClient, code: int) =
     client.close()
     quit(code)
 
-proc handle_word(client: HttpClient, word: string) =
+proc handle_word(client: HttpClient, word: string): int =
     util.inform_searching_word(word)
     let html: string = http.get_word_file(client, word)
     if html == "":
         util.inform_invalid_word(word)
-        exit_gracefully(client, 1)
+        return 1
 
     inform_found_word(word)
 
@@ -58,14 +58,16 @@ proc handle_word(client: HttpClient, word: string) =
                 output_def_example(exm, 8)
 
     debug fmt"{defs=}"
+    return 0
 
 when is_main_module:
     let client = httpclient.new_http_client(max_redirects = 0)
+    var code = 0
 
     debug(&"{words=}")
 
     for word in words:
         let word: string = util.serialize_word(word)
-        handle_word(client, word)
+        code = if handle_word(client, word) == 1: 1 else: code
 
-    exit_gracefully(client, 0)
+    exit_gracefully(client, code)
