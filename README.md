@@ -13,6 +13,7 @@ git clone --branch main --depth 1 <REPO URL> povi
 cd povi
 nimble install
 ```
+Note: this method may error at the last step. But don't panic, it should still install despite the error. Also note that it will install it in your Nimble's home folder, which is usually `~/.nimble/` (see the `bin/` folder there.) 
 
 # Command-line Arguments
 ```
