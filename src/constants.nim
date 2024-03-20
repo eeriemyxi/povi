@@ -1,4 +1,4 @@
-import std/[uri, os, re, terminal]
+import std/[uri, os, re]
 import struct
 
 const
@@ -8,9 +8,7 @@ const
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " &
         "(KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
     LANGUAGE* = struct.SupportedLanguage.ENGLISH
-    REPL_PROMPT* =
-        ansi_foreground_color_code(fg_yellow) & ansi_style_code(style_bright) & "povi > " &
-        ansi_reset_code
+    REPL_PROMPT* = "povi > "
 
 include includes/version
 include includes/help_text
