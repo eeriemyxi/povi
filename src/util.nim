@@ -57,6 +57,7 @@ proc output_word_def*(def: string, indent: int) =
         ansi_style_code(style_bright),
         " ".repeat(indent),
         fmt"{struct.Emoji.SMALL_ORANGE_DIAMOND}{def}",
+        ansi_reset_code,
     )
 
 proc output_def_example*(exm: string, indent: int) =
@@ -70,4 +71,5 @@ proc output_def_example*(exm: string, indent: int) =
             ansi_reset_code & ansi_style_code(style_italic) &
                 ansi_foreground_color_code(fg_white),
         ),
+        ansi_reset_code,
     )

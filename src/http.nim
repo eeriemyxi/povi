@@ -1,6 +1,9 @@
 import std/[httpclient, uri, options, streams, logging, strformat]
 import constants
 
+proc make_http_client*(): HttpClient =
+    return httpclient.new_http_client(max_redirects = 0)
+
 proc get_word_file*(client: HttpClient, word: string): string =
     let base_url = constants.BASE_URL / "dictionary" / $constants.LANGUAGE
     var resp = client.get(base_url / word)
