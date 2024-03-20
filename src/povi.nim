@@ -71,10 +71,11 @@ proc handle_word(client: HttpClient, word: string): int =
 proc repl() =
     alternate_screen_start()
     stderr.write_line("Type :exit to quit. Or :e. Or <C-d>. Or <C-c>.")
-    let client = make_http_client()
     var line: string
 
     while true:
+        # We create a new client on each input to avoid timeout
+        let client = make_http_client()
         let ok = read_line_from_stdin(constants.REPL_PROMPT, line)
 
         if not ok:
