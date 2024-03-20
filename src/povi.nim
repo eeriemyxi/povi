@@ -21,7 +21,7 @@ proc handle_cli(): seq[string] =
             if key == "version" or key == "V":
                 echo constants.VERSION
                 quit(0)
-            if key == "repl":
+            if key == "repl" or key == "r":
                 REPL = true
         of cmd_argument:
             words.add(key)
