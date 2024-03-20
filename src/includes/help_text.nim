@@ -1,4 +1,5 @@
-const HELP_TEXT* = """
+const HELP_TEXT* =
+    """
 usage: povi [-h] [--debug] [-V] [words ...]
 
 positional arguments:
