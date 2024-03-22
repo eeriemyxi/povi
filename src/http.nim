@@ -15,10 +15,12 @@ proc get_word_file*(client: HttpClient, word: string): string =
 
     if resp.code == HttpCode(302):
         let match_url = $base_url & "/"
+        let location = resp.headers["location"]
         debug(&"{match_url=}")
-        if resp.headers["location"] == match_url:
-            debug("Returning \"\" because `location` header matched match_url.")
+        if location == match_url:
+            debug("Returning \"\" because {location=} header matched match_url.")
             return ""
-        resp = client.get(resp.headers["location"])
+        debug fmt"Fetching {location=}"
+        resp = client.get(location)
 
     resp.body_stream.read_all()
