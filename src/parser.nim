@@ -229,13 +229,15 @@ proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
             let word_class_h =
                 cherrypick_node(word_header.get(), WORD_CLASS_CONTAINERS["idiom"], true)
             debug fmt"{word_class_h=}"
-            word_class = parse_word_class(word_class_h.get(), false)
+            if word_class_h.is_some:
+                word_class = parse_word_class(word_class_h.get(), false)
         else:
             let word_class_h = cherrypick_node(
                 word_header.get(), WORD_CLASS_CONTAINERS["default"], true
             )
             debug fmt"{word_class_h=}"
-            word_class = parse_word_class(word_class_h.get())
+            if word_class_h.is_some:
+                word_class = parse_word_class(word_class_h.get())
 
         debug(&"{word_title=}")
         debug(&"{word_class=}")
