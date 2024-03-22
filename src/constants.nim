@@ -15,4 +15,4 @@ include includes/help_text
 
 let
     SCRIPT_DIR* = os.get_app_dir()
-    WORD_CLASS_RE* = re(r"\W*(?<word>\w*)\W*?(?:\[?\W*?(?<code>\w)\W*?\])?")
+    WORD_CLASS_RE* = re"(?<word>[\w ]+)(?:\[\W*(?<code>[\w ,]+)\])?"
