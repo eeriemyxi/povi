@@ -1,9 +1,8 @@
 import
-    std/
-        [
-            htmlparser, re, xmltree, logging, options, terminal, strformat, strbasics,
-            streams,
-        ]
+    std/[
+        htmlparser, re, xmltree, logging, options, terminal, strformat, strbasics,
+        streams, strutils,
+    ]
 import constants, struct, util
 
 proc cherrypick_node(
@@ -147,50 +146,74 @@ proc parse_def_text(word_body: XmlNode): seq[struct.WordDefinition] =
 
     return def_texts
 
+proc text_until(node: XmlNode, tag: string): string =
+    var text = ""
+    for ch in node:
+        if ch.kind == xn_element:
+            if ch.tag == tag:
+                break
+
+        text = text & ch.inner_text()
+
+    debug fmt"{text=}"
+
+    return text
+
 proc parse_word_class(node: XmlNode): Option[WordClass] =
+    debug "called parse_word_class"
     var matches: array[2, string]
-    let word_class = node.inner_text()
+    let word_class = node.text_until("div")
     var matched = word_class.match(constants.WORD_CLASS_RE, matches)
+
+    debug fmt"{matches=} {matched=}"
+
     if matched:
-        let cls =
+        var cls =
             if matches[0] != "":
-                some(matches[0])
+                some(strutils.strip(matches[0]))
             else:
                 none(string)
         let code =
             if matches[1] != "":
-                some(matches[1])
+                some(strutils.strip(matches[1]).replace(re" +", " "))
             else:
                 none(string)
+
+        debug fmt"{cls=} {code=}"
+
         return some(WordClass(cls: cls, code: code))
 
 proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
     let html = parse_html(html_txt)
+    var bodies: seq[XmlNode]
 
-    for h_div in html.find_all("div"):
-        if h_div.attr("class") != "pr entry-body__el":
-            continue
+    html.cherrypick_node(r"entry-body__el", bodies, true)
 
-        debug("Found pr entry-body__el div")
+    for h_div in bodies:
+        debug("Found entry-body__el div")
 
         debug(&"{h_div.len=}")
 
-        var word_header = cherrypick_node(h_div, "pos-header dpos-h")
-        var word_body = cherrypick_node(h_div, "pos-body")
+        var word_header = cherrypick_node(h_div, r"pos-header", true)
+        var word_body = cherrypick_node(h_div, "pos-body|pv-body", true)
 
         var
             word_title = ""
             word_class: Option[WordClass]
 
-        if word_header.is_some:
-            let word_title_h = cherrypick_node(word_header.get(), "di-title")
-            if word_title_h.is_some:
-                word_title = word_title_h.get().inner_text()
+        let word_title_h = cherrypick_node(h_div, "di-title")
+        if word_title_h.is_some:
+            word_title = word_title_h.get().inner_text()
 
-            let word_class_h =
-                cherrypick_node(word_header.get(), "posgram dpos-g hdib lmr-5")
+        if word_header.is_some:
+            let word_class_h = cherrypick_node(
+                word_header.get(), WORD_CLASS_CONTAINERS.join("|"), true
+            )
             if word_class_h.is_some:
-                word_class = parse_word_class(word_class_h.get())
+                if word_class_h.get().attr("class") != WORD_CLASS_CONTAINERS[0]:
+                    word_class = parse_word_class(word_header.get())
+                else:
+                    word_class = parse_word_class(word_class_h.get())
 
         debug(&"{word_title=}")
         debug(&"{word_class=}")

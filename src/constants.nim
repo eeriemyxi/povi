@@ -10,6 +10,9 @@ const
     LANGUAGE* = struct.SupportedLanguage.ENGLISH
     REPL_PROMPT* = "povi > "
 
+    WORD_CLASS_CONTAINERS* =
+        @["posgram dpos-g hdib lmr-5", "anc-info-head danc-info-head"]
+
 include includes/version
 include includes/help_text
 
