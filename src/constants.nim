@@ -1,4 +1,4 @@
-import std/[uri, os, re]
+import std/[uri, os, re, tables]
 import struct
 
 const
@@ -11,7 +11,7 @@ const
     REPL_PROMPT* = "povi > "
 
     WORD_CLASS_CONTAINERS* =
-        @["posgram dpos-g hdib lmr-5", "pos dpos"]
+        {"default": "posgram dpos-g hdib lmr-5", "idiom": "pos dpos"}.to_table()
 
 include includes/version
 include includes/help_text

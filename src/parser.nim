@@ -1,7 +1,7 @@
 import
     std/[
         htmlparser, re, xmltree, logging, options, terminal, strformat, strbasics,
-        streams, strutils,
+        streams, strutils, tables,
     ]
 import constants, struct, util
 
@@ -159,7 +159,7 @@ proc text_until(node: XmlNode, tag: string): string =
 
     return text
 
-proc parse_word_class(node: XmlNode, do_until: bool =true): Option[WordClass] =
+proc parse_word_class(node: XmlNode, do_until: bool = true): Option[WordClass] =
     debug "called parse_word_class"
     var matches: array[2, string]
     var word_class = ""
@@ -219,21 +219,20 @@ proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
             word_title = word_title_h.get().inner_text()
 
         if word_header.is_some:
-           word_header_text = word_header.get().inner_text()
+            word_header_text = word_header.get().inner_text()
 
         debug fmt"{word_header_text=}"
 
         if word_header_text.contains("phrasal"):
             word_class = parse_word_class(word_header.get())
         elif word_header_text.contains("idiom"):
-            let word_class_h = cherrypick_node(
-                word_header.get(), WORD_CLASS_CONTAINERS[1], true
-            )
+            let word_class_h =
+                cherrypick_node(word_header.get(), WORD_CLASS_CONTAINERS["idiom"], true)
             debug fmt"{word_class_h=}"
             word_class = parse_word_class(word_class_h.get(), false)
         else:
             let word_class_h = cherrypick_node(
-                word_header.get(), WORD_CLASS_CONTAINERS[0], true
+                word_header.get(), WORD_CLASS_CONTAINERS["default"], true
             )
             debug fmt"{word_class_h=}"
             word_class = parse_word_class(word_class_h.get())
