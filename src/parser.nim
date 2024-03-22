@@ -53,7 +53,7 @@ proc parse_a_tag(base_url: string, node: XmlNode): string =
     var parsed_txt = new_string_stream()
 
     var url = node.attr("href")
-    if url != "" and not url.contains(re"http"):
+    if url != "" and not url.contains(re"^http"):
         url = base_url & url
 
     parsed_txt.write(hyperlink(url, node.inner_text()))
