@@ -159,10 +159,14 @@ proc text_until(node: XmlNode, tag: string): string =
 
     return text
 
-proc parse_word_class(node: XmlNode): Option[WordClass] =
+proc parse_word_class(node: XmlNode, do_until: bool =true): Option[WordClass] =
     debug "called parse_word_class"
     var matches: array[2, string]
-    let word_class = node.text_until("div")
+    var word_class = ""
+    if do_until:
+        word_class = node.text_until("div")
+    else:
+        word_class = node.inner_text()
     var matched = word_class.match(constants.WORD_CLASS_RE, matches)
 
     debug fmt"{matches=} {matched=}"
@@ -188,17 +192,26 @@ proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
     var bodies: seq[XmlNode]
 
     html.cherrypick_node(r"entry-body__el", bodies, true)
+    if bodies.len == 0:
+        html.cherrypick_node(r"pr di superentry", bodies, true)
 
     for h_div in bodies:
-        debug("Found entry-body__el div")
+        debug("Found entry body div")
 
         debug(&"{h_div.len=}")
 
+        # may fail if di-info is priotised
         var word_header = cherrypick_node(h_div, r"pos-header", true)
-        var word_body = cherrypick_node(h_div, "pos-body|pv-body", true)
+        if word_header.is_none:
+            debug "if triggered"
+            word_header = cherrypick_node(h_div, r"di-info", true)
+        debug fmt"{word_header=}"
+
+        var word_body = cherrypick_node(h_div, "pos-body|pv-body|idiom-body", true)
 
         var
             word_title = ""
+            word_header_text = ""
             word_class: Option[WordClass]
 
         let word_title_h = cherrypick_node(h_div, "di-title")
@@ -206,14 +219,24 @@ proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
             word_title = word_title_h.get().inner_text()
 
         if word_header.is_some:
+           word_header_text = word_header.get().inner_text()
+
+        debug fmt"{word_header_text=}"
+
+        if word_header_text.contains("phrasal"):
+            word_class = parse_word_class(word_header.get())
+        elif word_header_text.contains("idiom"):
             let word_class_h = cherrypick_node(
-                word_header.get(), WORD_CLASS_CONTAINERS.join("|"), true
+                word_header.get(), WORD_CLASS_CONTAINERS[1], true
             )
-            if word_class_h.is_some:
-                if word_class_h.get().attr("class") != WORD_CLASS_CONTAINERS[0]:
-                    word_class = parse_word_class(word_header.get())
-                else:
-                    word_class = parse_word_class(word_class_h.get())
+            debug fmt"{word_class_h=}"
+            word_class = parse_word_class(word_class_h.get(), false)
+        else:
+            let word_class_h = cherrypick_node(
+                word_header.get(), WORD_CLASS_CONTAINERS[0], true
+            )
+            debug fmt"{word_class_h=}"
+            word_class = parse_word_class(word_class_h.get())
 
         debug(&"{word_title=}")
         debug(&"{word_class=}")
