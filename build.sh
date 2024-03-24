@@ -11,7 +11,7 @@ nim c -d:ssl -d:mingw -d:release --opt:size --cpu:amd64 \
 
 cd bin/windows
 wget https://nim-lang.org/download/dlls.zip
-unzip dlls.zip -d bin/windows/dlls
+unzip dlls.zip -d dlls
 
 zip povi-amd64-windows.zip \
     povi-amd64-windows.exe \
