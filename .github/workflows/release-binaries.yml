@@ -23,14 +23,11 @@ jobs:
           platform: x64
 
       - name: Build Binaries
-        run: |
-          mkdir -p bin
-          nim c -d:ssl -d:release --opt:size --cpu:amd64 -o:bin/povi-amd64.bin src/povi
-          nim c -d:ssl -d:mingw -d:release --opt:size -o:bin/povi-amd64.exe --cpu:amd64 src/povi
+        run: sh build.sh
 
       - name: Upload Binaries to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            bin/povi-amd64.bin
-            bin/povi-amd64.exe
+            bin/linux/povi-amd64-linux.bin
+            bin/windows/povi-amd64-windows.zip
