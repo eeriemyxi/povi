@@ -13,7 +13,7 @@ cd bin/windows
 wget https://nim-lang.org/download/dlls.zip
 unzip dlls.zip -d dlls
 
-zip povi-amd64-windows.zip \
+zip -j povi-amd64-windows.zip \
     povi-amd64-windows.exe \
     dlls/cacert.pem \
     dlls/libcrypto-1_1-x64.dll \
