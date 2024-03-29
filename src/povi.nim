@@ -25,6 +25,8 @@ proc handle_cli(): seq[string] =
                 put_env("POVI_USE_REPL", "1")
             if key == "altsc" or key == "a":
                 put_env("POVI_ALTSC", "1")
+            if key == "nosplit" or key == "n":
+                put_env("POVI_NOSPLIT", "1")
         of cmd_argument:
             words.add(key)
 
@@ -87,11 +89,15 @@ proc repl() =
         if line == ":exit" or line == ":e":
             exit_gracefully(client, 0)
 
-        let words = line.split_whitespace()
-
-        for word in words:
-            let word = util.serialize_word(word)
+        if exists_env("POVI_NOSPLIT") and get_env("POVI_NOSPLIT") == "1":
+            let word = util.serialize_word(line)
             discard handle_word(client, word)
+        else:
+            let words = line.split_whitespace()
+
+            for word in words:
+                let word = util.serialize_word(word)
+                discard handle_word(client, word)
 
 proc main(words: seq[string]) =
     let client = make_http_client()
