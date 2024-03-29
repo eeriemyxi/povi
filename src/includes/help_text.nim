@@ -13,5 +13,4 @@ options:
   -a, --altsc    Use alternate screen buffer for the REPL. 
                  Scrolling may not work.
   -n, --nosplit  Don't split the input into multiple words, 
-                 instead treat it as one single word/phrase.
-"""
+                 instead treat it as one single word/phrase."""
