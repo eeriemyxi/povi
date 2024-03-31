@@ -207,7 +207,7 @@ proc parse_definitions*(html_txt: string, defs: var seq[WordBody]) =
             word_header = cherrypick_node(h_div, r"di-info", true)
         debug fmt"{word_header=}"
 
-        var word_body = cherrypick_node(h_div, "pos-body|pv-body|idiom-body", true)
+        var word_body = cherrypick_node(h_div, "pos-body|pv-body|idiom-body|phrase-di-body", true)
 
         var
             word_title = ""
