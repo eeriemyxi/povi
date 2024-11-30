@@ -8,3 +8,4 @@ srcDir = "src"
 bin = @["povi"]
 
 requires "nim >= 2.0.2"
+requires "htmlparser == 0.1.0"

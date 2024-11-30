@@ -1,8 +1,9 @@
 import
     std/[
-        htmlparser, re, xmltree, logging, options, terminal, strformat, strbasics,
+        re, xmltree, logging, options, terminal, strformat, strbasics,
         streams, strutils, tables,
     ]
+import pkg/htmlparser
 import constants, struct, util
 
 proc cherrypick_node(
