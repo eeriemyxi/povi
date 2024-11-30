@@ -15,7 +15,7 @@ jobs:
       - name: Setup Nim Environment
         uses: jiro4989/setup-nim-action@v1
         with:
-          nim-version: '2.0.2'
+          nim-version: '2.2.0'
 
       - name: Set up MinGW
         uses: egor-tensin/setup-mingw@v2
