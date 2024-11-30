@@ -4,9 +4,9 @@ mkdir -p bin/windows
 mkdir -p bin/windows/dlls
 mkdir -p bin/linux
 
-nim c -d:ssl -d:release --opt:size --cpu:amd64 \
+nimble c -d:ssl -d:release --opt:size --cpu:amd64 \
     -o:bin/linux/povi-amd64-linux.bin src/povi
-nim c -d:ssl -d:mingw -d:release --opt:size --cpu:amd64 \
+nimble c -d:ssl -d:mingw -d:release --opt:size --cpu:amd64 \
     -o:bin/windows/povi-amd64-windows.exe src/povi
 
 cd bin/windows
